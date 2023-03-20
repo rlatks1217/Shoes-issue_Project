@@ -23,6 +23,24 @@
                       <label for="point">포인트</label>
                       <input type="text" class="form-control" id="point" :value="printpoint" disabled />
                     </div>
+                    <br>
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-block mx-auto d-block"
+                        style="background-color: rgb(237, 241, 214); color: black; border-color: rgb(237, 241, 214)"
+                        v-on:click="mypagetradelike()"
+                      >
+                        중고거래 좋아요한 게시글</button
+                      >
+                      <br>
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-block mx-auto d-block"
+                        style="background-color: rgb(237, 241, 214); color: black; border-color: rgb(237, 241, 214)"
+                        v-on:click="mypagecommunitylike()"
+                      >
+                        자유게시판 좋아요한 게시글</button
+                      >
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
@@ -45,17 +63,18 @@
                         type="submit"
                         class="btn btn-primary btn-block mx-auto d-block"
                         style="background-color: rgb(237, 241, 214); color: black; border-color: rgb(237, 241, 214)"
-                        v-on:click="mypagelike()"
+                        v-on:click="mypagetradewrite()"
                       >
-                        내가 좋아요한 게시글</button
-                      ><br />
+                        중고거래 작성한 게시글
+                      </button>
+                      <br />
                       <button
                         type="submit"
                         class="btn btn-primary btn-block mx-auto d-block"
                         style="background-color: rgb(237, 241, 214); color: black; border-color: rgb(237, 241, 214)"
-                        v-on:click="mypagewrite()"
+                        v-on:click="mypagecommunitywrite()"
                       >
-                        내가 작성한 게시글
+                        커뮤니티 작성한 게시글
                       </button>
                     </ul>
                   </div>
@@ -96,11 +115,17 @@ export default {
     informupdate: function () {
       this.$router.push({ name: 'updateUser' });
     },
-    mypagelike: function () {
-      this.$router.push({ name: 'myPageLike' });
+    mypagecommunitylike: function () {
+      this.$router.push({ name: 'communityBoard' });
     },
-    mypagewrite: function () {
-      this.$router.push({ name: 'myPageWrite' });
+    mypagetradelike: function () {
+      this.$router.push({ name: 'tradeBoard' });
+    },
+    mypagecommunitywrite: function () {
+      this.$router.push({ name: 'communityBoard' });
+    },
+    mypagetradewrite: function () {
+      this.$router.push({ name: 'tradeBoard' });
     },
   },
   computed: {

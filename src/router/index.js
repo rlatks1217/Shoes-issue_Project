@@ -19,8 +19,6 @@ import messageReceive from '../components/body/messageReceive';
 import messageReceiveDescription from '../components/body/messageReceiveDescription';
 import messageSendDescription from '../components/body/messageSendDescription';
 import updateUser from '../components/body/updateUser';
-import myPageLike from '../components/body/myPageLike';
-import myPageWrite from '../components/body/myPageWrite';
 
 Vue.use(VueRouter);
 
@@ -114,16 +112,6 @@ const routes = [
     path: '/update-user',
     name: 'updateUser',
     component: updateUser,
-  },
-  {
-    path: '/my-page-like',
-    name: 'myPageLike',
-    component: myPageLike,
-  },
-  {
-    path: '/my-page-write',
-    name: 'myPageWrite',
-    component: myPageWrite,
   },
 ];
 

@@ -4,64 +4,60 @@
       <div class="communityBoardTitle">자유 게시판</div>
       <div class="communityBoardDescription">신발에 관한 이야기라면 어떤 이야기라도 좋아요! 함께 이야기해요</div>
     </div>
-    <button class="writeButton" v-on:click="boardWrite()">글쓰기</button>
-    <v-simple-table height="200px" class="table">
-      <thead class="table-light">
-        <tr>
-          <th>No.</th>
-          <th>Title</th>
-          <th>ID</th>
-          <th>Date</th>
-          <th>Like</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(board, i) in boards" :key="i">
-          <th>{{ i + 1 }}</th>
-          <th @click="boardDescription(board.boardId)">{{ board.boardTitle }}</th>
-          <th>{{ board.userId }}</th>
-          <th>{{ board.boardDate }}</th>
-          <th>{{ board.boardLike }}</th>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-btn class="writeButton" @click="boardWrite()">글쓰기</v-btn>
+    <v-data-table :headers="headers" :items="boards" class="elevation-1 table" style="margin-top: 80px">
+      <template v-slot:[`item.boardTitle`]="{ item }">
+        <div @click="boardDescription(item.boardId)">{{ item.boardTitle }}</div>
+      </template>
+    </v-data-table>
   </div>
 </template>
+
 <script>
 export default {
   data: function () {
     return {
-      boards: {},
+      boards: [],
       userId: '',
+      headers: [
+        { text: 'No.', value: 'no' },
+        { text: 'Title', value: 'boardTitle' },
+        { text: 'Nickname', value: 'nickName' },
+        { text: 'Date', value: 'boardDate' },
+        { text: 'Like', value: 'boardLike' },
+      ],
     };
   },
   created() {
     this.$axios
       .get(`http://localhost/board`)
       .then(data => {
-        this.boards = data.data;
+        this.boards = data.data.map((board, i) => ({ ...board, no: i + 1 }));
+        console.log(data.data);
       })
       .catch(error => {
         console.log(error);
       });
   },
   methods: {
-    boardDescription: function (boardId) {
+    boardDescription(boardId) {
       console.log(boardId);
       this.$store.state.boardId = boardId;
       this.$router.push({ name: 'communityBoardDescription' });
       console.log('클릭하면 실행');
     },
-    boardWrite: function () {
+    boardWrite() {
       this.$router.push({ name: 'communityBoardWrite' });
     },
   },
 };
 </script>
+
 <style scoped>
 .bodyTitle {
   margin: 2% 30px 0px 30px;
 }
+
 .communityBoardTitle {
   font-size: 30px;
   font-weight: 700;

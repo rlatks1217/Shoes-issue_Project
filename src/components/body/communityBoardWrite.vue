@@ -39,7 +39,7 @@ export default {
           {
             boardTitle: this.boardTitle, //
             boardContents: this.boardContents,
-            userId: 'admin',
+            userId: sessionStorage.getItem('userId'),
           },
           {
             headers: {

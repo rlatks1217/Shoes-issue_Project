@@ -14,9 +14,20 @@
     </div>
     <div id="board-button">
       {{ like }}
-      <button class="mybutton" @click="addLike" id="like">♥️</button>
-      <button class="mybutton" @click="goToUpdateBoard">수정</button>
-      <button class="mybutton" @click="deleteBoard">삭제</button>
+      <v-template v-if="!this.userId">
+        <v-btn text icon disabled color="pink" @click="addLike">
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        <v-btn disabled class="mybutton" @click="goToUpdateBoard">수정</v-btn>
+        <v-btn disabled class="mybutton" @click="deleteBoard">삭제</v-btn>
+      </v-template>
+      <v-template v-else>
+        <v-btn text icon color="pink" @click="addLike">
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        <v-btn class="mybutton" @click="goToUpdateBoard">수정</v-btn>
+        <v-btn class="mybutton" @click="deleteBoard">삭제</v-btn>
+      </v-template>
     </div>
 
     <h3>댓글</h3>
@@ -45,7 +56,8 @@
     </table>
     <div>
       <input class="create-comment" v-model="commentContents" />
-      <button class="create-comment-button" v-on:click="createComment()">댓글 작성</button>
+      <v-btn class="create-comment-button" v-if="!this.userIdComment" disabled v-on:click="createComment()">댓글 작성</v-btn>
+      <v-btn class="create-comment-button" v-else v-on:click="createComment()">댓글 작성</v-btn>
     </div>
   </div>
 </template>
@@ -62,6 +74,8 @@ export default {
       commentContents: '',
       updateCommentStatus: false,
       updateCommentContents: '',
+      userId: '',
+      userIdComment: '',
     };
   },
 
@@ -79,6 +93,16 @@ export default {
 
         // 좋아요 정보
         this.like = data.data.boardLike;
+
+        if (this.board.userId === sessionStorage.getItem('userId')) {
+          this.userId = sessionStorage.getItem('userId');
+        }
+        this.userIdComment = sessionStorage.getItem('userId');
+
+        console.log('userId 확인');
+        console.log(this.userId);
+        console.log(this.board.userId);
+        console.log(sessionStorage.getItem('userId'));
 
         // 유저가 좋아요를 누른 게시물인지 확인
         let userId = sessionStorage.getItem('userId');

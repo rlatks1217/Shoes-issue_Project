@@ -15,7 +15,7 @@
         <h4 class="mb-3" style="font-weight: 500;">{{ product.tradePrice }}원</h4>
         <p class="mb-5" style="height: 100px; font-weight: 800;">{{ product.tradeContents }}</p>
         <button class="btn btn-warning" @click="reserveCancel(product.tradeId)" v-if="product.reserveCancelFlag">예약 취소</button>
-        <button class="btn btn-primary" @click="reserve(product.tradeId, product.tradeStatus)" v-if="product.reserveFlag">{{product.tradeStatus}}</button>
+        <button class="btn btn-primary" @click="reserve(product.tradeId, product.tradeStatus)" >{{product.tradeStatus}}</button>
         <button class="btn btn-warning" @click="updateBoard(product.tradeId)" v-if="product.updateFlag">수정</button>
         <button class="btn btn-danger" @click="deleteBoard(product.tradeId, product.tradeImage)" v-if="product.deleteFlag">삭제</button>
       </div>
@@ -32,6 +32,10 @@ export default {
   },
   methods: {
     reserve(tradeId, tradeStatus) {
+        if (sessionStorage.getItem("userId") != this.product.userId) {
+          alert('권한이 없습니다!');
+          return;
+        }
         if (tradeStatus ==='예약 가능') {
             this.$axios({
              url: 'http://localhost/trade-board/status',
@@ -47,12 +51,17 @@ export default {
              this.product.reserveCancelFlag = true;
             }.bind(this));
         }else {
-            //예약 중인 경우
-
-
-
-
-
+            this.$axios({
+              url : 'http://localhost/trade-board/status-c',
+            method : 'PUT',
+            params : {
+              tradeId : tradeId
+            },
+            responseType : 'json'
+           }).then(function (result) {
+              this.product.tradeStatus = result.data;
+              this.product.reserveCancelFlag = false;
+           }.bind(this));
         }
     },
     reserveCancel(tradeId) {
@@ -86,12 +95,14 @@ export default {
         }).then(function(tradeBoard) {
             console.log(tradeBoard.data);
             console.log("성공했습니다!");
-            this.$store.state.list = tradeBoard.data;
+            this.$store.state.list = tradeBoard.data[0];
+            this.$store.state.page = tradeBoard.data[1];
             this.$router.push({ name: "tradeBoard" });
         }.bind(this));
     },
     clickLike(tradeId) {
-        let userId = sessionStorage.getItem("userId");
+      let userId = sessionStorage.getItem("userId");
+      if (userId != null) {
         this.$axios({
             url : 'http://localhost/trade-board/',
             method : 'GET',
@@ -108,6 +119,7 @@ export default {
                 this.product.tradeLike += -1;
             }
         }.bind(this));
+      }
 
     }
   }//methods 종료

@@ -5,48 +5,88 @@
         <div class="row justify-content-center">
           <div class="col-lg-8 col-md-10">
             <div class="card">
-              <div class="card-header text-center" style="background-color: rgb(237, 241, 214); color: black">마이 페이지</div>
+              <div
+                class="card-header text-center"
+                style="background-color: rgb(237, 241, 214); color: black"
+              >
+                마이 페이지
+              </div>
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="userid">이메일</label>
-                      <input type="text" class="form-control" id="userid" :value="loginId" disabled />
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="userid"
+                        :value="loginId"
+                        disabled
+                      />
                     </div>
                     <br />
                     <div class="form-group">
                       <label for="nickname">닉네임</label>
-                      <input type="text" class="form-control" id="nickname" :value="printnickname" disabled />
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="nickname"
+                        :value="printnickname"
+                        disabled
+                      />
                     </div>
                     <br />
                     <div class="form-group">
                       <label for="point">포인트</label>
-                      <input type="text" class="form-control" id="point" :value="printpoint" disabled />
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="point"
+                        :value="printpoint"
+                        disabled
+                      />
                     </div>
-                    <br>
-                    <button
-                        type="submit"
-                        class="btn btn-primary btn-block mx-auto d-block"
-                        style="background-color: rgb(237, 241, 214); color: black; border-color: rgb(237, 241, 214)"
-                        v-on:click="mypagetradelike()"
-                      >
-                        중고거래 좋아요한 게시글</button
-                      >
-                      <br>
+                    <br />
+
+                    <div class="trade-buttons">
+                      중고거래
                       <button
                         type="submit"
                         class="btn btn-primary btn-block mx-auto d-block"
-                        style="background-color: rgb(237, 241, 214); color: black; border-color: rgb(237, 241, 214)"
-                        v-on:click="mypagecommunitylike()"
+                        style="
+                          background-color: rgb(237, 241, 214);
+                          color: black;
+                          border-color: rgb(237, 241, 214);
+                        "
+                        v-on:click="mypagetradelike()"
                       >
-                        자유게시판 좋아요한 게시글</button
+                        좋아요한 게시글
+                      </button>
+
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-block mx-auto d-block"
+                        style="
+                          background-color: rgb(237, 241, 214);
+                          color: black;
+                          border-color: rgb(237, 241, 214);
+                        "
+                        v-on:click="mypagetradewrite()"
                       >
+                        작성한 게시글
+                      </button>
+                    </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="profile-image"></label>
                       <div class="d-flex justify-content-center">
-                        <img alt="프로필 이미지" class="rounded-circle" style="max-width: 200px; max-height: 200px" :src="'/images/profile/' + profileImage" />
+                        <img
+                          alt="프로필 이미지"
+                          class="rounded-circle"
+                          style="max-width: 200px; max-height: 200px"
+                          :src="'/images/profile/' + profileImage"
+                        />
                       </div>
                     </div>
                     <br />
@@ -54,34 +94,56 @@
                       <button
                         type="submit"
                         class="btn btn-primary btn-block mx-auto d-block"
-                        style="background-color: rgb(237, 241, 214); color: black; border-color: rgb(237, 241, 214)"
+                        style="
+                          background-color: rgb(237, 241, 214);
+                          color: black;
+                          border-color: rgb(237, 241, 214);
+                        "
                         @click="messageCheck"
                       >
-                        쪽지 확인</button
-                      ><br />
-                      <button
-                        type="submit"
-                        class="btn btn-primary btn-block mx-auto d-block"
-                        style="background-color: rgb(237, 241, 214); color: black; border-color: rgb(237, 241, 214)"
-                        v-on:click="mypagetradewrite()"
-                      >
-                        중고거래 작성한 게시글
-                      </button>
-                      <br />
-                      <button
-                        type="submit"
-                        class="btn btn-primary btn-block mx-auto d-block"
-                        style="background-color: rgb(237, 241, 214); color: black; border-color: rgb(237, 241, 214)"
-                        v-on:click="mypagecommunitywrite()"
-                      >
-                        커뮤니티 작성한 게시글
+                        쪽지 확인
                       </button>
                     </ul>
+                    <div class="community-buttons">
+                      게시판
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-block mx-auto d-block"
+                        style="
+                          background-color: rgb(237, 241, 214);
+                          color: black;
+                          border-color: rgb(237, 241, 214);
+                        "
+                        v-on:click="mypagecommunitylike()"
+                      >
+                        좋아요한 게시글
+                      </button>
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-block mx-auto d-block"
+                        style="
+                          background-color: rgb(237, 241, 214);
+                          color: black;
+                          border-color: rgb(237, 241, 214);
+                        "
+                        v-on:click="mypagecommunitywrite()"
+                      >
+                        작성한 게시글
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <br />
 
-                <button v-on:click="informupdate()" class="btn btn-primary btn-block mx-auto d-block" style="background-color: rgb(237, 241, 214); color: black; border-color: rgb(237, 241, 214)">
+                <button
+                  v-on:click="informupdate()"
+                  class="btn btn-primary btn-block mx-auto d-block"
+                  style="
+                    background-color: rgb(237, 241, 214);
+                    color: black;
+                    border-color: rgb(237, 241, 214);
+                  "
+                >
                   정보수정
                 </button>
               </div>
@@ -94,55 +156,86 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   data() {
     return {
-      userid: '',
-      nickname: '',
-      point: '',
-      handleImageUpload: '',
-      change: '',
+      userid: "",
+      nickname: "",
+      point: "",
+      handleImageUpload: "",
+      change: "",
       selectedFile: null,
       previewUrl: null,
     };
   },
   methods: {
     messageCheck: function () {
-      this.$router.push({ name: 'messageSend' });
+      this.$router.push({ name: "messageReceive" });
     },
     informupdate: function () {
-      this.$router.push({ name: 'updateUser' });
+      this.$router.push({ name: "updateUser" });
     },
     mypagecommunitylike: function () {
-      this.$router.push({ name: 'communityBoard' });
+      this.$router.push({ name: "communityBoard" });
     },
     mypagetradelike: function () {
-      this.$router.push({ name: 'tradeBoard' });
+      this.$router.push({ name: "tradeBoard" });
     },
     mypagecommunitywrite: function () {
-      this.$router.push({ name: 'communityBoard' });
+      axios
+        .post(`http://localhost:80/user/communityAll`, {
+          userId: sessionStorage.getItem("userId"),
+        })
+        .then((response) => {
+          console.log(response);
+          console.log(response.data); // Spring에서 반환한 데이터를 콘솔에 출력
+          this.$router.push({
+            name: "communityBoard",
+            params: { result: response.data },
+          }); // 데이터를 정상적으로 받았으면 라우트 이동 수행
+        })
+        .catch((error) => {
+          console.error(error); // 에러 발생 시 콘솔에 출력
+        });
     },
+
     mypagetradewrite: function () {
-      this.$router.push({ name: 'tradeBoard' });
+      this.$router.push({ name: "tradeBoard" });
     },
   },
   computed: {
     loginId() {
-      return sessionStorage.getItem('userId');
+      return sessionStorage.getItem("userId");
     },
     printnickname() {
-      return sessionStorage.getItem('nickName');
+      return sessionStorage.getItem("nickName");
     },
     printpoint() {
-      return sessionStorage.getItem('point');
+      return sessionStorage.getItem("point");
     },
     profileImage() {
-      return sessionStorage.getItem('profileImage');
+      return sessionStorage.getItem("profileImage");
     },
   },
 };
 </script>
 
-<style></style>
+<style>
+.trade-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.community-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+</style>

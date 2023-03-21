@@ -9,13 +9,13 @@
               <td class="ms-auto" style="margin-left: auto">
                 <ul class="navbar-nav ms-auto flex-wrap nowrap mb-2 mb-lg-0 me-3 member">
                   <li class="nav-member">
-                    <a v-if="!userId" v-on:click="signup()" class="nav-link active" aria-current="page" href="#" style="font-size: 15px">회원가입</a>
+                    <a v-if="!nickName" v-on:click="signup()" class="nav-link active" aria-current="page" href="#" style="font-size: 15px">회원가입</a>
                   </li>
                   <li class="nav-member">
-                    <a v-if="!userId" class="nav-link active" v-on:click="login" aria-current="page" href="#" style="font-size: 15px">로그인</a>
+                    <a v-if="!nickName" class="nav-link active" v-on:click="login" aria-current="page" href="#" style="font-size: 15px">로그인</a>
                   </li>
                   <li class="nav-member">
-                    <a v-if="userId" class="nav-link active" v-on:click="logout()" aria-current="page" href="#" style="font-size: 15px">로그아웃</a>
+                    <a v-if="nickName" class="nav-link active" v-on:click="logout()" aria-current="page" href="#" style="font-size: 15px">로그아웃</a>
                   </li>
                 </ul>
               </td>
@@ -33,12 +33,12 @@
               </td>
               <td>
                 <form class="d-flex me-3" role="search">
-                  <a v-if="userId" class="btn btn-outline-success button" type="submit" style="height: 40px; font-size: 16px"><img src="/images/nomessage.png" alt="" style="height: 20px" /></a>
+                  <a v-if="nickName" class="btn btn-outline-success button" type="submit" style="height: 40px; font-size: 16px"><img src="/images/nomessage.png" alt="" style="height: 20px" /></a>
                 </form>
               </td>
               <td>
                 <form class="d-flex me-3" role="search">
-                  <a v-if="userId" class="btn btn-outline-success button" type="submit" style="height: 40px; font-size: 16px" v-on:click="myPage()"
+                  <a v-if="nickName" class="btn btn-outline-success button" type="submit" style="height: 40px; font-size: 16px" v-on:click="myPage()"
                     ><img src="/images/mypage.png" alt="" style="height: 20px"
                   /></a>
                 </form>
@@ -73,6 +73,7 @@ export default {
   data() {
     return {
       userId: sessionStorage.getItem('userId'),
+      nickName: sessionStorage.getItem('nickName'),
       keyword: '',
     };
   },
@@ -83,6 +84,7 @@ export default {
     logout: function () {
       sessionStorage.clear();
       this.userId = null;
+      this.nickName = null;
       window.location.href = 'http://localhost:8080/';
     },
 
@@ -157,6 +159,9 @@ export default {
   computed: {
     loginId() {
       return sessionStorage.getItem('userId');
+    },
+    loginName() {
+      return sessionStorage.getItem('nickName');
     },
   },
 };

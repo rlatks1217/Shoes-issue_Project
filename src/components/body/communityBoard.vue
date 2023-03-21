@@ -5,7 +5,18 @@
       <div class="communityBoardDescription">신발에 관한 이야기라면 어떤 이야기라도 좋아요! 함께 이야기해요</div>
     </div>
     <v-btn class="writeButton" @click="boardWrite()">글쓰기</v-btn>
-    <v-data-table :headers="headers" :items="boards" class="elevation-1 table" style="margin-top: 80px">
+    <v-data-table
+      :headers="headers"
+      :items="boards"
+      :rows-per-page="5"
+      :footer-props="{
+        itemsPerPageOptions: [5],
+        showCurrentPage: false,
+        itemsPerPageText: 'Rows per page',
+      }"
+      class="elevation-1 table"
+      style="margin-top: 80px"
+    >
       <template v-slot:[`item.boardTitle`]="{ item }">
         <div @click="boardDescription(item.boardId)">{{ item.boardTitle }}</div>
       </template>

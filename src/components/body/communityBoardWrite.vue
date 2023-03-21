@@ -25,21 +25,25 @@ export default {
     return {
       boardTitle: '',
       boardContents: '',
+      userId: '',
     };
   },
   methods: {
+    created() {},
     submitPost() {
       let url = 'http://localhost:80/board';
       let data = {};
       console.log(data);
-      console.log(this.boardTitle);
+
+      let userId = sessionStorage.getItem('userId');
+      console.log(userId);
       this.$axios
         .put(
           url,
           {
             boardTitle: this.boardTitle, //
             boardContents: this.boardContents,
-            userId: sessionStorage.getItem('userId'),
+            userId,
           },
           {
             headers: {

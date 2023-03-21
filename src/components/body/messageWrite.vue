@@ -5,17 +5,19 @@
       <br />
       <div class="form-group">
         <label for="messageSender"> 보낸 사람: {{ this.userId }}</label>
-        <label for="messageReceiver">받는 사람: {{ this.messageReceiver }}</label>
+        <label for="messageReceiver"
+          >받는 사람: {{ this.messageReceiver }}</label
+        >
       </div>
 
       <div class="form-group">
         <label for="title">제목:</label>
-        <input type="text" id="title" v-model="boardTitle" />
+        <input type="text" id="title" v-model="messageTitle" />
       </div>
 
       <div class="form-group">
         <label for="content">내용:</label>
-        <textarea id="content" v-model="boardContents"></textarea>
+        <textarea id="content" v-model="messageContents"></textarea>
       </div>
 
       <div class="form-group">
@@ -30,20 +32,20 @@
 export default {
   data() {
     return {
-      messageTitle: '',
-      messageContents: '',
-      messageReceiver: '',
-      userId: '',
+      messageTitle: "",
+      messageContents: "",
+      messageReceiver: "",
+      userId: "",
     };
   },
   created() {
     this.messageReceiver = this.$store.state.messageReceiver;
     // this.userId = this.$store.state.userId
-    this.userId = 'user2';
+    this.userId = "user2";
   },
   methods: {
     submitPost() {
-      let url = 'http://localhost:80/message';
+      let url = "http://localhost:80/message";
       let data = {};
       console.log(data);
       console.log(this.messageTitle);
@@ -57,14 +59,14 @@ export default {
             messageSender: this.userId,
           },
           {
-            headers: { 'Content-Type': 'application/json' },
-          },
+            headers: { "Content-Type": "application/json" },
+          }
         )
-        .then(data => {
+        .then((data) => {
           console.log(data);
-          this.$router.push({ name: 'messageSend' });
+          this.$router.push({ name: "messageSend" });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -72,8 +74,8 @@ export default {
     messagereceive: function (messageId) {
       console.log(messageId);
       this.$store.state.messageId = messageId;
-      this.$router.push({ name: 'messageSend' });
-      console.log('보낸 쪽지함');
+      this.$router.push({ name: "message" });
+      console.log("보낸 쪽지함");
     },
   },
 };
@@ -109,7 +111,7 @@ label {
   margin-right: 10px;
 }
 
-input[type='text'],
+input[type="text"],
 textarea {
   width: 100%;
   padding: 10px;

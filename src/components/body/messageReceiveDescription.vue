@@ -12,10 +12,10 @@
       <div class="message-text">
         {{ this.message.messageContents }}
       </div>
-      <div id="message-button">
-        <button class="mybutton">삭제</button>
-        <button class="mybutton" @click="messagereceive">확인</button>
-        <button class="mybutton" @click="messagewrite(message.messageSender)">답장</button>
+      <div class="message-button">
+        <v-btn class="mybutton" @click="messageDelete">삭제</v-btn>
+        <v-btn class="mybutton" @click="messagereceive">확인</v-btn>
+        <v-btn class="mybutton" @click="messagewrite(message.messageSender)">답장</v-btn>
       </div>
     </div>
   </div>
@@ -49,6 +49,24 @@ export default {
       });
   },
   methods: {
+    messageDelete: function() {
+      let messageId = this.message.messageId;
+      // console.log(this.message.messageId);
+      console.log(messageId);
+      const url = `http://localhost/message/${messageId}`;
+
+      this.$axios({
+        url,
+        method: 'DELETE'
+      })
+        .then({
+
+        })
+        .catch({
+
+        });
+    },
+
     messagereceive: function (messageId) {
       console.log(messageId);
       this.$store.state.messageId = messageId;
@@ -66,11 +84,17 @@ export default {
       this.$router.push({ name: 'messageWrite' });
       console.log('쪽지 작성');
     },
+
+    
   },
 };
 </script>
 
 <style>
+.mybutton {
+  margin: 10px;
+}
+
 .message-title {
   color: black;
   font-size: 24px;

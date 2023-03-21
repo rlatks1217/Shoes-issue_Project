@@ -25,6 +25,7 @@
     </div>
   </div>
 </template>
+  margin-bottom: 5px;
 
 <script>
 export default {

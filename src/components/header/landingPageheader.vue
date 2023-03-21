@@ -79,7 +79,7 @@
     },
     methods: {
       login: function () {
-        this.$router.push({ name: "login" });
+        this.$router.push({ name: "userLogin" });
       },
       logout: function () {
         sessionStorage.clear();
@@ -92,7 +92,7 @@
         this.$router.push({ name: "signupUser" });
       },
       landingPage: function () {
-        this.$router.push({ name: "landing" });
+        this.$router.push({ name: "landingPage" });
       },
       tradeBoard: function () {
         this.$axios({

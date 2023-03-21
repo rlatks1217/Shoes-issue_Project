@@ -164,7 +164,7 @@ export default {
     },
 
     kakaopagereload() {
-      this.$router.push({ name: "kakaosignupuser" });
+      this.$router.push({ name: "kakaoSignupUser" });
     },
 
     getKakaoAccount() {

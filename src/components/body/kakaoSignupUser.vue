@@ -77,6 +77,27 @@
                       />
                     </div>
                     <br />
+                    <v-combobox
+                      v-model="selectedShoes1"
+                      :items="shoes1"
+                      label="첫번째 선호하는 신발"
+                    ></v-combobox>
+                    <v-combobox
+                      v-model="selectedShoes2"
+                      :items="shoes1.filter((shoe) => shoe !== selectedShoes1)"
+                      label="두번째 선호하는 신발"
+                    ></v-combobox>
+                    <v-combobox
+                      v-model="selectedShoes3"
+                      :items="
+                        shoes1.filter(
+                          (shoe) =>
+                            shoe !== selectedShoes1 && shoe !== selectedShoes2
+                        )
+                      "
+                      label="세번째 선호하는 신발"
+                    ></v-combobox>
+                    <br />
                     <button
                       @click.prevent="signup()"
                       class="btn btn-primary btn-block mx-auto d-block"
@@ -110,6 +131,17 @@ export default {
       userPw: "",
       confirmPassword: "",
       phone: "",
+      selectedShoes: null,
+      selectedShoes1: "",
+      selectedShoes2: "",
+      selectedShoes3: "",
+      shoes1: [
+        "운동화/런닝화",
+        "스니커즈/캐주얼화",
+        "샌들/슬리퍼",
+        "구두",
+        "워커/부츠",
+      ],
     };
   },
   methods: {
@@ -120,12 +152,22 @@ export default {
         !this.userId ||
         !this.userPw ||
         !this.confirmPassword ||
-        !this.phone
+        !this.phone ||
+        !this.selectedShoes1 ||
+        !this.selectedShoes2 ||
+        !this.selectedShoes3
       ) {
         alert("모든 항목을 입력해주세요.");
         return;
       }
       const pwRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})/; // 정규식
+
+      const nameRegex = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+$/;
+
+      if (!nameRegex.test(this.userName)) {
+        alert("이름은 영어 또는 한글만 입력 가능합니다.");
+        return;
+      }
 
       if (!pwRegex.test(this.userPw)) {
         alert(
@@ -142,6 +184,15 @@ export default {
         alert("핸드폰 번호를 정확히 입력해주세요.");
         return;
       }
+
+      if (
+        this.selectedShoes1 == this.selectedShoes2 ||
+        this.selectedShoes2 == this.selectedShoes3 ||
+        this.selectedShoes1 == this.selectedShoes3
+      ) {
+        alert("선호하는 신발 선택이 겹칩니다.");
+        return;
+      }
       axios
         .post("http://localhost:80/user", {
           userName: this.userName,
@@ -149,6 +200,9 @@ export default {
           userId: this.userId,
           userPw: this.userPw,
           phone: this.phone,
+          preference1: this.selectedShoes1,
+          preference2: this.selectedShoes2,
+          preference3: this.selectedShoes3,
         })
         .then((response) => {
           // 성공적으로 처리된 경우

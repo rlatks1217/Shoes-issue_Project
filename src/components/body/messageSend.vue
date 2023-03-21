@@ -9,20 +9,24 @@
           <th>받은 사람</th>
           <th>제목</th>
           <th>보낸 날짜</th>
-        </tr>
+          </tr>
       </thead>
       <tbody>
         <tr v-for="(message, i) in messages" :key="i">
           <td>
-            <input type="checkbox" v-model="message.checked" @click="toggleChecked(message)" />
+            <input type ="checkbox" v-model="message.checked" @click="toggleChecked(message)">
           </td>
-          <td>{{ message.messageReceiver }}</td>
-          <td v-on:click="messagesendDescription(message.messageId)">{{ message.messageTitle }}</td>
-          <td>{{ message.messageSenddate }}</td>
+          <td>{{message.messageReceiver}}</td>
+          <td v-on:click="messagesendDescription(message.messageId)">{{message.messageTitle}}</td>
+          <td>{{message.messageSenddate}}</td>
         </tr>
-        <td>
-          <input type="checkbox" v-model="message.checked" @click="toggleChecked(message)" />
-        </td>
+        <!-- <td>
+          <input
+            type="checkbox"
+            v-model="message.checked"
+            @click="toggleChecked(message)"
+          />
+        </td> -->
       </tbody>
     </table>
     <button class="deleteBtn">삭제</button>
@@ -38,17 +42,18 @@ export default {
     };
   },
   created() {
-    let userId = 'user2';
+    // let userId  = 'user2';
+    let userId = sessionStorage.getItem("userId");
     let url = `http://localhost/message/sent/${userId}`;
     this.$axios({
       url,
-      methods: 'GET',
+      methods: "GET",
     })
-      .then(data => {
+      .then((data) => {
         console.log(data.data);
-        this.messages = data.data;
+        this.messages= data.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -57,16 +62,16 @@ export default {
       message.checked = !message.checked;
       console.log(message.checked);
     },
-    messagesendDescription: function (messageId) {
+    messagesendDescription: function(messageId) {
       console.log(messageId);
       this.$store.state.messageId = messageId;
       this.$router.push({ name: 'messageSendDescription' });
       console.log('보낸 쪽지 상세');
     },
-    messagereceive: function (messageId) {
+    messagereceive: function(messageId) {
       console.log(messageId);
       this.$store.state.messageId = messageId;
-      this.$router.push({ name: 'messageSend' });
+      this.$router.push({ name: 'messageReceive' });
       console.log('받은 쪽지함');
     },
   },

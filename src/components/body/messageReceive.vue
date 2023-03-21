@@ -16,23 +16,29 @@
       <tbody>
         <tr v-for="(message, i) in messages" :key="i">
           <td>
-            <input type ="checkbox" v-model="message.checked" @click="toggleChecked(message)">
+            <input
+              type="checkbox"
+              v-model="message.checked"
+              @click="toggleChecked(message)"
+            />
           </td>
-          <td>{{message.messageSender}}</td>
-          <td v-on:click="messagereceiveDescription(message.messageId)">{{message.messageTitle}}</td>
-          <td>{{message.messageSenddate}}</td>
-          <td>{{message.messageOpenstatus}}</td>
+          <td>{{ message.messageSender }}</td>
+          <td v-on:click="messagereceiveDescription(message.messageId)">
+            {{ message.messageTitle }}
+          </td>
+          <td>{{ message.messageSenddate }}</td>
+          <td>{{ message.messageOpenstatus }}</td>
         </tr>
-        <td>
+        <!-- <td>
           <input
             type="checkbox"
             v-model="message.checked"
             @click="toggleChecked(message)"
           />
-        </td>
+        </td> -->
       </tbody>
     </table>
-    <button class="deleteBtn">삭제</button>
+    <button class="deleteBtn" @click="checkDelete">삭제</button>
     <!-- <button v-on:click="messageReceive00">모든 메시지 조회 기능 테슴트</button> -->
   </div>
 </template>
@@ -46,7 +52,9 @@ export default {
     };
   },
   created() {
-    let userId  = 'user2';
+    // let userId  = 'user2';
+    // this.userId = this.$store.state.userId
+    let userId = sessionStorage.getItem("userId");
     let url = `http://localhost/message/inbox/${userId}`;
     this.$axios({
       url,
@@ -54,7 +62,7 @@ export default {
     })
       .then((data) => {
         console.log(data.data);
-        this.messages = data.data; 
+        this.messages = data.data;
       })
       .catch((error) => {
         console.log(error);
@@ -65,17 +73,41 @@ export default {
       message.checked = !message.checked;
       console.log(message.checked);
     },
-    messagereceiveDescription: function(messageId) {
-      console.log(messageId);
-      this.$store.state.messageId = messageId;
-      this.$router.push({ name: 'messageReceiveDescription' });
-      console.log('받은 쪽지 상세');
+
+    checkDelete: function () {
+      console.log('data확인');
+      console.log(this.messages);
+      console.log('for문좀 돌릴게요!');
+      // for (message in this.messages){
+      //       console.log(message);
+      //   }
+      if(this.message.checked == true) {
+        this.message
+        
+        // this.$axios({
+        //   url: `http://localhost/message/${messageId}`,
+        //   method: "DELETE",
+
+        // }).then(function (messageId) {
+        //   console.log(messageId);
+        //   this.$store.state.messageId = messageId;
+        //   this.$router.push({ name: "messageSend" });
+        //   console.log("보낸 쪽지함");
+        // });
+      }
     },
-    messagesend: function(messageId) {
+
+    messagereceiveDescription: function (messageId) {
       console.log(messageId);
       this.$store.state.messageId = messageId;
-      this.$router.push({ name: 'messageSend' });
-      console.log('보낸 쪽지함');
+      this.$router.push({ name: "messageReceiveDescription" });
+      console.log("받은 쪽지 상세");
+    },
+    messagesend: function (messageId) {
+      console.log(messageId);
+      this.$store.state.messageId = messageId;
+      this.$router.push({ name: "messageSend" });
+      console.log("보낸 쪽지함");
     },
     // messageReceive00: function(){
     //   console.log('메시지 체크하는 기능이에요');

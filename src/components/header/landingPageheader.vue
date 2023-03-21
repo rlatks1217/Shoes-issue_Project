@@ -68,100 +68,117 @@
 </template>
 <script>
 import eventBus from '../eventBus.js';
-
+import $ from 'jquery';
 export default {
   data() {
     return {
-      userId: sessionStorage.getItem('userId'),
-      keyword: '',
+      userId: sessionStorage.getItem("userId"),
+      keyword: "",
     };
   },
   methods: {
     login: function () {
-      this.$router.push({ name: 'userLogin' });
+      this.$router.push({ name: "login" });
     },
     logout: function () {
       sessionStorage.clear();
       this.userId = null;
-      window.location.href = 'http://localhost:8080/';
+      window.location.href = "http://localhost:8080/";
     },
 
     signup: function () {
-      this.$router.push({ name: 'signupUser' });
+      this.$router.push({ name: "signupUser" });
     },
     landingPage: function () {
-      this.$router.push({ name: 'landingPage' });
+      this.$router.push({ name: "landing" });
     },
     tradeBoard: function () {
       this.$axios({
-        url: 'http://localhost/trade-board/all',
-        method: 'GET',
-        responseType: 'json',
+        url: "http://localhost/trade-board/all",
+        method: "GET",
+        responseType: "json",
       }).then(
         function (result) {
-          if (this.$router.currentRoute.name !== 'tradeBoard') {
-            this.$store.state.list = result.data;
-            this.$router.push({ name: 'tradeBoard' });
+        if (this.$router.currentRoute.name !== "tradeBoard") {
+            console.log(result.data[1]);
+            this.$store.state.list = result.data[0];
+            this.$store.state.page = result.data[1];
+            this.$router.push({ name: "tradeBoard" });
           } else {
-            eventBus.$emit('selectTradeBoardTitle', result.data);
+            eventBus.$emit("selectTradeBoardTitle", result.data);
           }
-          this.keyword = '';
-        }.bind(this),
+          this.keyword = "";
+        }.bind(this)
       );
     },
     searchTradeBoardEnter: function (event) {
+      let category = $('#category').val();
+      let keyword = this.keyword;
       if (event.keyCode === 13) {
         this.$axios({
-          url: 'http://localhost/trade-board/' + this.keyword,
-          method: 'GET',
-          responseType: 'json',
+          url: "http://localhost/trade-board/title",
+          method: "GET",
+          responseType: "json",
+          params : {
+            keyword : keyword,
+            category : category
+          }
         }).then(
           function (tradeBoard) {
-            if (this.$router.currentRoute.name !== 'tradeBoard') {
-              this.$store.state.list = tradeBoard.data;
-              this.$router.push({ name: 'tradeBoard' });
+            if (this.$router.currentRoute.name !== "tradeBoard") {
+              console.log(tradeBoard.data[1]);
+              this.$store.state.list = tradeBoard.data[0];
+              this.$store.state.page = tradeBoard.data[1];
+              this.$router.push({ name: "tradeBoard" });
             } else {
-              eventBus.$emit('selectTradeBoardTitle', tradeBoard.data);
+              eventBus.$emit("selectTradeBoardTitle", tradeBoard.data);
             }
 
-            this.keyword = '';
-          }.bind(this),
+            this.keyword = "";
+          }.bind(this)
         );
       }
     },
     searchTradeBoardClick: function () {
+      let category = $('#category').val();
+      let keyword = this.keyword;
       this.$axios({
-        url: 'http://localhost/trade-board/' + this.keyword,
-        method: 'GET',
-        responseType: 'json',
+        url: "http://localhost/trade-board/title",
+        method: "GET",
+        responseType: "json",
+        params : {
+          keyword : keyword,
+          category : category
+        }
       }).then(
         function (result) {
-          if (this.$router.currentRoute.name !== 'tradeBoard') {
-            this.$store.state.list = result.data;
-            this.$router.push({ name: 'tradeBoard' });
+          if (this.$router.currentRoute.name !== "tradeBoard") {
+            this.$store.state.list = result.data[0];
+            this.$store.state.page = result.data[1];
+            this.$router.push({ name: "tradeBoard" });
           } else {
-            eventBus.$emit('selectTradeBoardTitle', result.data);
+            eventBus.$emit("selectTradeBoardTitle", result.data);
           }
 
-          this.keyword = '';
-        }.bind(this),
+          this.keyword = "";
+        }.bind(this)
       );
     },
     communityBoard: function () {
-      this.$router.push({ name: 'communityBoard' });
+      this.$router.push({ name: "communityBoard" });
     },
     myPage: function () {
-      this.$router.push({ name: 'myPage' });
+      this.$router.push({ name: "myPage" });
     },
   },
   computed: {
     loginId() {
-      return sessionStorage.getItem('userId');
+      return sessionStorage.getItem("userId");
     },
   },
 };
 </script>
-<style>
+  <style>
 .button {
   border-color: transparent;
 }

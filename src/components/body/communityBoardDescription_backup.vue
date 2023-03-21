@@ -1,92 +1,62 @@
 <template>
-  <v-container overflow-auto class="main-container">
-    <v-container class="content-container">
-      <div class="boardTitle-subtitle">자유게시판 ></div>
-      <div class="boardTitle">
-        <h3>{{ this.board.boardTitle }}</h3>
+  <div class="board-detail">
+    <div class="board-header">
+      <h1 class="board-title">제목: {{ this.board.boardTitle }}</h1>
+      <div class="board-meta">
+        <div class="board-author">작성자: {{ this.board.userId }}</div>
+        <div class="board-date">작성일: {{ this.board.boardDate }}</div>
       </div>
-      <div class="user-information-box">{{ this.board.userId }}신발사랑 | 작성일: {{ this.board.boardDate }}<br /></div>
-
-      <hr />
-
-      <div class="board-content-container">내용: {{ this.board.boardContents }}</div>
-
-      <div class="bottom-content-box">
-        <v-btn icon x-small color="pink">
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-        좋아요: {{ like }}
-        <template v-if="!this.userId">
-          <!-- 수정 버튼 -->
-          <v-btn disabled small plain outlined class="mybutton" @click="goToUpdateBoard">수정</v-btn>
-          <!-- 삭제 버튼 -->
-          <v-btn disabled small plain outlined class="mybutton" @click="deleteBoard">삭제</v-btn>
-        </template>
-        <!-- 로그인 안했을 때  -->
-        <template v-else>
-          <v-btn text icon color="pink" @click="addLike">
-            <v-icon>mdi-heart</v-icon>
-          </v-btn>
-          <v-btn class="mybutton" @click="goToUpdateBoard">수정</v-btn>
-          <v-btn class="mybutton" @click="deleteBoard">삭제</v-btn>
-        </template>
+    </div>
+    <div class="board-content">
+      <div class="board-text">
+        {{ this.board.boardContents }}
       </div>
-      <div class="comment-title-box">댓글</div>
+    </div>
+    {{ like }}
+    <v-btn v-if="!userIdComment" disabled text icon color="pink"><v-icon>mdi-heart</v-icon></v-btn>
+    <template v-if="!this.userId">
+      <v-btn disabled class="mybutton" @click="goToUpdateBoard">수정</v-btn>
+      <v-btn disabled class="mybutton" @click="deleteBoard">삭제</v-btn>
+    </template>
 
-      <!-- 좋아요 버튼 -->
-      <!-- <v-btn v-if="!userIdComment" disabled text icon color="pink"><v-icon>mdi-heart</v-icon></v-btn>
+    <template v-else>
+      <v-btn text icon color="pink" @click="addLike">
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+      <v-btn class="mybutton" @click="goToUpdateBoard">수정</v-btn>
+      <v-btn class="mybutton" @click="deleteBoard">삭제</v-btn>
+    </template>
 
-      <div v-if="updateCommentStatus === true">
-        <input v-model="updateCommentContents" /> <button v-on:click="updateComment(commentId)">댓글 수정</button><button v-on:click="updateCommentToUnvisible">취소</button>
-      </div> -->
-      <!-- table-start -->
-      아이디<br />
-      내용<br />
-      날짜<br />
-
-      <table id="comment">
-        <thead>
-          <tr>
-            <th class="commentTitle">댓글 내용</th>
-            <th class="commentTitle">작성자 이름</th>
-            <th class="commentTitle">작성일</th>
-            <th class="commentTitle">댓글 수정</th>
-            <th class="commentTitle">댓글 삭제</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="commentList" v-for="comment in comments" :key="comment.commentId">
-            <td class="commentContent">{{ comment.commentContents }}</td>
-            <td class="commentMember">{{ comment.userId }}</td>
-            <td class="commentDate">{{ comment.commentDate }}</td>
-            <td class="commentUpdate" @click="updateCommentToVisible(comment.commentId)">수정</td>
-            <td class="commentDelete" @click="deleteComment(comment.commentId)">삭제</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- table-end -->
-      <!-- comment button-start -->
-      asdf<br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <div class="comment-content-box">
-        <div class="comment-create-user">작성자 아이디</div>
-        <input class="create-comment" v-model="commentContents" />
-
-        <div class="comment-action-button">
-          <div>
-            <v-btn class="create-comment-button" x-small v-if="!this.userIdComment" disabled v-on:click="createComment()">댓글 작성</v-btn>
-            <v-btn class="create-comment-button" x-small v-else v-on:click="createComment()">댓글 작성</v-btn>
-          </div>
-        </div>
-      </div>
-      <br />
-      <!-- comment button-end -->
-    </v-container>
-  </v-container>
+    <h3>댓글</h3>
+    <div v-if="updateCommentStatus === true">
+      <input v-model="updateCommentContents" /> <button v-on:click="updateComment(commentId)">댓글 수정</button><button v-on:click="updateCommentToUnvisible">취소</button>
+    </div>
+    <table id="comment">
+      <thead>
+        <tr>
+          <th class="commentTitle">댓글 내용</th>
+          <th class="commentTitle">작성자 이름</th>
+          <th class="commentTitle">작성일</th>
+          <th class="commentTitle">댓글 수정</th>
+          <th class="commentTitle">댓글 삭제</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="commentList" v-for="comment in comments" :key="comment.commentId">
+          <td class="commentContent">{{ comment.commentContents }}</td>
+          <td class="commentMember">{{ comment.userId }}</td>
+          <td class="commentDate">{{ comment.commentDate }}</td>
+          <td class="commentUpdate" @click="updateCommentToVisible(comment.commentId)">수정</td>
+          <td class="commentDelete" @click="deleteComment(comment.commentId)">삭제</td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <input class="create-comment" v-model="commentContents" />
+      <v-btn class="create-comment-button" v-if="!this.userIdComment" disabled v-on:click="createComment()">댓글 작성</v-btn>
+      <v-btn class="create-comment-button" v-else v-on:click="createComment()">댓글 작성</v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -332,78 +302,189 @@ export default {
 </script>
 
 <style scoped>
-.main-container {
-  border: 1px solid black;
-  width: 100%;
-  margin-top: 10px;
+.board-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.board-author {
+  color: #3e8e41;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.board-date {
+  color: #3e8e41;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.board-content {
+  margin-bottom: 10px;
+  border: black 4px;
+  border-radius: 4px;
+}
+
+.comment {
+  border: 1px solid #3e8e41;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-number {
+  color: #3e8e41;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.comment-author {
+  color: #3e8e41;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.board-detail {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 90%;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  color: #3e8e41;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.meta {
+  color: #7c7c7c;
+  margin-bottom: 10px;
+}
+
+.content {
+  font-size: 18px;
+  line-height: 1.5;
   margin-bottom: 20px;
-  height: 75%;
 }
 
-.content-container {
-  /* border: 1px solid black; */
+.comment-list {
+  margin-top: 20px;
+}
+
+.comment-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.comment-meta {
+  color: #7c7c7c;
+  margin-bottom: 5px;
+}
+
+.comment-content {
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.board-text {
   width: 100%;
-  height: 100%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.boardTitle {
-}
-.boardTitle-subtitle {
-  padding-bottom: 5px;
-  color: rgb(64, 81, 59);
-  font-weight: 700;
-}
-
-.user-information-container {
-  border: 1px solid black;
-}
-
-.board-content-container {
-  border: 1px solid black;
-  height: 30%;
+  height: 200px;
+  border: #7c7c7c 1px solid;
+  border-radius: 5px;
   padding: 5px;
 }
 
-.bottom-content-box {
-  border-bottom: 1px solid rgb(207, 215, 215);
-  margin-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 5px;
+.board-button {
+  display: flex;
 }
 
-.comment-title-box {
-  margin-top: 10px;
-  border-left: 1px solid rgb(207, 215, 215);
-  border-right: 1px solid rgb(207, 215, 215);
-  border-bottom: 1px solid rgb(207, 215, 215);
-  font-size: larger;
-  font-weight: 600;
+.mybutton {
+  margin: 5px;
+  width: 50px;
+  height: 30px;
+  background-color: #f2f2f2;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+}
+.mybutton:hover {
+  background-color: #3e8e41;
+  color: white;
 }
 
-.comment-content-box {
-  border: 1px solid rgb(207, 215, 215);
-  height: 15%;
-  padding: 5px;
+#comment {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
 }
 
-.comment-create-user {
-  font-weight: 800;
-  font-size: 15px;
+.commentList {
+  text-align: center;
+  background: #f2f2f2;
+  border-radius: 5px;
 }
 
+.commentContent {
+  width: 40%;
+  border: none;
+  border-radius: 5px;
+}
+
+.commentMember {
+  width: 15%;
+  border: none;
+  border-radius: 5px;
+}
+.commentDate {
+  width: 15%;
+  border: none;
+  border-radius: 5px;
+}
+.commentUpdate {
+  width: 15%;
+  border: none;
+  border-radius: 5px;
+}
+.commentDelete {
+  width: 15%;
+  border: none;
+  border-radius: 5px;
+}
+
+.commentTitle {
+  background: #3e8e41;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+}
+
+#like {
+  color: red;
+}
 .create-comment {
-  width: 100%;
-  padding-left: 7px;
-}
-
-.comment-action-button {
-  border: 1px solid rgb(207, 215, 215);
-  padding: 4px;
+  margin-top: 15px;
+  width: 77%;
+  font-size: 15px;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .create-comment-button {
-  float: right;
+  width: 20%;
+  padding: 5px;
+  background-color: #f2f2f2;
+  font-size: 15px;
+  border-radius: 5px;
+  border: none;
+}
+
+.create-comment-button:hover {
+  background: #3e8e41;
+  color: white;
 }
 </style>

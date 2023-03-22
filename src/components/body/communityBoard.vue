@@ -4,7 +4,9 @@
       <div class="communityBoardTitle">자유 게시판</div>
       <div class="communityBoardDescription">신발에 관한 이야기라면 어떤 이야기라도 좋아요! 함께 이야기해요</div>
     </div>
-    <v-btn class="writeButton" @click="boardWrite()">글쓰기</v-btn>
+    <v-btn secondary small class="writeButton" @click="goToGame">게임 이동!!</v-btn>
+    <v-btn v-if="!this.userId" secondary disabled small class="writeButton">글쓰기</v-btn>
+    <v-btn v-else class="writeButton" small @click="boardWrite()">글쓰기</v-btn>
     <v-data-table
       :headers="headers"
       :items="boards"
@@ -40,22 +42,23 @@ export default {
     };
   },
   created() {
+    this.userId = sessionStorage.getItem('userId');
     this.$axios
       .get(`http://localhost/board`)
       .then(data => {
         this.boards = data.data.map((board, i) => ({ ...board, no: i + 1 }));
-        console.log(data.data);
       })
       .catch(error => {
         console.log(error);
       });
   },
   methods: {
+    goToGame: function () {
+      this.$router.push({ name: 'gamePage' });
+    },
     boardDescription(boardId) {
-      console.log(boardId);
       this.$store.state.boardId = boardId;
       this.$router.push({ name: 'communityBoardDescription' });
-      console.log('클릭하면 실행');
     },
     boardWrite() {
       this.$router.push({ name: 'communityBoardWrite' });
@@ -87,16 +90,8 @@ export default {
 
 .writeButton {
   float: right;
-  font-size: 17px;
   margin-top: 20px;
-  width: 8%;
-  height: 40px;
   margin-right: 3%;
-  margin-bottom: 10px;
   background-color: rgb(237, 241, 214);
-  color: black;
-  border-color: rgb(237, 241, 214);
-  border-radius: 5px;
-  border: 0;
 }
 </style>

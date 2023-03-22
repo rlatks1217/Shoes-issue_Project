@@ -57,11 +57,11 @@ import $ from 'jquery';
     },
     methods : {
       tradeBoardWrite : function() {
+      if (sessionStorage.getItem('userId') != undefined) {
         this.$router.push({ name: "tradeBoardWrite" });
-        // if (sessionStorage.getItem('userId') != undefined) {
-        // }else {
-        //   alert('로그인을 해주세요!');
-        // }
+      }else {
+          alert('로그인을 해주세요!');
+      }
       },
       tradeBoardDetail : function(tradeId, userId) {
         this.$axios({

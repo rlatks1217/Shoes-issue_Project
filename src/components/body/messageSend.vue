@@ -16,7 +16,7 @@
           <td>
             <input type ="checkbox" v-model="message.checked" @click="toggleChecked(message)">
           </td>
-          <td>{{message.messageReceiver}}</td>
+          <td>{{message.nickName}}</td>
           <td v-on:click="messagesendDescription(message.messageId)">{{message.messageTitle}}</td>
           <td>{{message.messageSenddate}}</td>
         </tr>

@@ -41,7 +41,7 @@ export default {
   created() {
     this.messageReceiver = this.$store.state.messageReceiver;
     // this.userId = this.$store.state.userId
-    this.userId = "user2";
+    this.userId = sessionStorage.getItem("userId");
   },
   methods: {
     submitPost() {

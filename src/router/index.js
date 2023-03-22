@@ -5,6 +5,7 @@ import userLogin from '../components/body/userLogin';
 import kakaoSignupUser from '../components/body/kakaoSignupUser';
 import myPage from '../components/body/myPage';
 import messageWrite from '../components/body/messageWrite';
+import tradeMessage from '../components/body/tradeMessage';
 import messageSend from '../components/body/messageSend';
 import landingPage from '../components/body/landingPage';
 import signupUser from '../components/body/signupUser';
@@ -113,6 +114,11 @@ const routes = [
     name: 'updateUser',
     component: updateUser,
   },
+  {
+    path: '/trade-message',
+    name: 'tradeMessage',
+    component: tradeMessage,
+  }
 ];
 
 export default new VueRouter({

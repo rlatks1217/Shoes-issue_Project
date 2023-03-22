@@ -33,7 +33,7 @@
         </a>
       </li>
       <li class="page-item" v-for="value in page.buttonCount" v-bind:key="value+10000">
-        <a class="page-link" href="#" v-on:click="clickPage(value)">{{value}}</a>
+        <a class="page-link" href="#" v-on:click="clickPage(value)" >{{value}}</a>
         </li>
       <li class="page-item" v-if="page.next">
         <a class="page-link" href="#" aria-label="Next" v-on:click="nextClick()" v-if="page.next">
@@ -52,7 +52,8 @@ import $ from 'jquery';
       return {
         list : this.$store.state.list,
         page : this.$store.state.page,
-        currentPage : this.$store.state.page.page
+        currentPage : this.$store.state.page.page,
+        currentClickPageButton : ''
       }
     },
     methods : {
@@ -173,7 +174,6 @@ import $ from 'jquery';
         this.list = tradeBoard[0];
         this.page = tradeBoard[1];
       }.bind(this));
-
       
     },
     watch : {
@@ -182,7 +182,7 @@ import $ from 'jquery';
         this.pagiNation(selectPage);
       },
     }
-
+    
   }
 </script>
 <style>
@@ -205,5 +205,8 @@ import $ from 'jquery';
 .writeButton:hover {
   background-color: #3e8e41; /* 마우스를 올리면 배경색 변경 */
   color: white; /* 글자색 변경 */
+}
+.current {
+  background-color: skyblue;
 }
 </style>

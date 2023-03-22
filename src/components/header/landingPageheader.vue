@@ -44,6 +44,13 @@
                   </form>
                 </td>
                 <td>
+                <select id="category" class="form-select form-select-sm" aria-label=".form-select-sm example" style="width: 245px;">
+                  <option selected value="운동화/런닝화">운동화/런닝화</option>
+                  <option value="스니커즈/캐주얼화">스니커즈/캐주얼화</option>
+                  <option value="샌들/슬리퍼">샌들/슬리퍼</option>
+                  <option value="구두">구두</option>
+                  <option value="워커/부츠">워커/부츠</option>
+                </select>
                   <div class="input-group">
                     <input
                       class="form-control"

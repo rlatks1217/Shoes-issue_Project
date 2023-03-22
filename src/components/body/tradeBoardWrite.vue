@@ -95,13 +95,13 @@ export default {
       }
     },
     checkExtension(fileName, fileSize) {
-      let regex = new RegExp(/(.*?)\.(jpg|jpeg|png|gif|bmp)$/);
+      let regex = /\.(jpg|jpeg|png|gif|bmp)$/i;
       let maxSize = 5242880;
 
 			if(fileSize >= maxSize) {
 				alert("파일 사이즈 초과");
 				return false;
-			}else if (regex.test(fileName)) {
+			}else if (!regex.test(fileName)) {
 				alert("허용되지 않는 확장자");
 				return false;
 			}else {

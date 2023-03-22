@@ -47,9 +47,9 @@
                       />
                     </div>
                     <br />
-
-                    <div class="trade-buttons">
-                      중고거래
+                    <!--
+                      <div class="community-buttons"> 
+                      게시판
                       <button
                         type="submit"
                         class="btn btn-primary btn-block mx-auto d-block"
@@ -58,11 +58,10 @@
                           color: black;
                           border-color: rgb(237, 241, 214);
                         "
-                        v-on:click="mypagetradelike()"
+                        v-on:click="mypagecommunitylike()"
                       >
                         좋아요한 게시글
                       </button>
-
                       <button
                         type="submit"
                         class="btn btn-primary btn-block mx-auto d-block"
@@ -71,9 +70,38 @@
                           color: black;
                           border-color: rgb(237, 241, 214);
                         "
-                        v-on:click="mypagetradewrite()"
+                        v-on:click="mypagecommunitywrite()"
                       >
                         작성한 게시글
+                      </button> 
+                      </div>-->
+                    <div class="trade-buttons">
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-block mx-auto d-block"
+                        style="
+                          background-color: rgb(237, 241, 214);
+                          color: black;
+                          border-color: rgb(237, 241, 214);
+                        "
+                        v-on:click="tradeBoardLike()"
+                      >
+                        중고거래 좋아요한 게시글
+                      </button>
+                    </div>
+                    <br />
+                    <div class="trade-buttons">
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-block mx-auto d-block"
+                        style="
+                          background-color: rgb(237, 241, 214);
+                          color: black;
+                          border-color: rgb(237, 241, 214);
+                        "
+                        v-on:click="tradeBoardWrite()"
+                      >
+                        중고거래 작성한 게시글
                       </button>
                     </div>
                   </div>
@@ -104,33 +132,6 @@
                         쪽지 확인
                       </button>
                     </ul>
-                    <div class="community-buttons">
-                      게시판
-                      <button
-                        type="submit"
-                        class="btn btn-primary btn-block mx-auto d-block"
-                        style="
-                          background-color: rgb(237, 241, 214);
-                          color: black;
-                          border-color: rgb(237, 241, 214);
-                        "
-                        v-on:click="mypagecommunitylike()"
-                      >
-                        좋아요한 게시글
-                      </button>
-                      <button
-                        type="submit"
-                        class="btn btn-primary btn-block mx-auto d-block"
-                        style="
-                          background-color: rgb(237, 241, 214);
-                          color: black;
-                          border-color: rgb(237, 241, 214);
-                        "
-                        v-on:click="mypagecommunitywrite()"
-                      >
-                        작성한 게시글
-                      </button>
-                    </div>
                   </div>
                 </div>
                 <br />
@@ -156,7 +157,8 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
+import eventBus from '../eventBus.js';
 
 export default {
   data() {
@@ -168,6 +170,7 @@ export default {
       change: "",
       selectedFile: null,
       previewUrl: null,
+      tradeBoard: "",
     };
   },
   methods: {
@@ -181,29 +184,70 @@ export default {
       this.$router.push({ name: "communityBoard" });
     },
     mypagetradelike: function () {
-      this.$router.push({ name: "tradeBoard" });
+      this.tradeBoardLike();
     },
-    mypagecommunitywrite: function () {
-      axios
-        .post(`http://localhost:80/user/communityAll`, {
-          userId: sessionStorage.getItem("userId"),
-        })
-        .then((response) => {
-          console.log(response);
-          console.log(response.data); // Spring에서 반환한 데이터를 콘솔에 출력
-          this.$router.push({
-            name: "communityBoard",
-            params: { result: response.data },
-          }); // 데이터를 정상적으로 받았으면 라우트 이동 수행
-        })
-        .catch((error) => {
-          console.error(error); // 에러 발생 시 콘솔에 출력
-        });
-    },
+    // mypagecommunitywrite: function () {
+    //   axios
+    //     .post(`http://localhost:80/user/communityAll`, {
+    //       userId: sessionStorage.getItem("userId"),
+    //     })
+    //     .then((response) => {
+    //       console.log(response);
+    //       console.log(response.data); // Spring에서 반환한 데이터를 콘솔에 출력
+    //       this.$router.push({
+    //         name: "communityBoard",
+    //         params: { result: response.data },
+    //       }); // 데이터를 정상적으로 받았으면 라우트 이동 수행
+    //     })
+    //     .catch((error) => {
+    //       console.error(error); // 에러 발생 시 콘솔에 출력
+    //     });
+    // },
 
     mypagetradewrite: function () {
-      this.$router.push({ name: "tradeBoard" });
+      this.tradeBoardWrite();
     },
+
+    tradeBoardWrite: function () {
+        this.$axios({
+          url: "http://localhost/user/tradeBoardWrite",
+          method: "GET",
+          responseType: "json",
+          params: { userId : sessionStorage.getItem('userId')}
+        }).then(
+          function (result) {
+          if (this.$router.currentRoute.name !== "tradeBoard") {
+              console.log(result.data[1]);
+              this.$store.state.list = result.data[0];
+              this.$store.state.page = result.data[1];
+              this.$router.push({ name: "tradeBoard" });
+            } else {
+              eventBus.$emit("selectTradeBoardTitle", result.data);
+            }
+            this.keyword = "";
+          }.bind(this)
+        );
+      },
+       tradeBoardLike: function () {
+        this.$axios({
+          url: "http://localhost//user/tradeBoardLike",
+          method: "GET",
+          responseType: "json",
+          params: { userId : sessionStorage.getItem('userId')}
+        }).then(
+          function (result) {
+          if (this.$router.currentRoute.name !== "tradeBoard") {
+              console.log(result.data[1]);
+              this.$store.state.list = result.data[0];
+              this.$store.state.page = result.data[1];
+              this.$router.push({ name: "tradeBoard" });
+            } else {
+              eventBus.$emit("selectTradeBoardTitle", result.data);
+            }
+            this.keyword = "";
+          }.bind(this)
+        );
+      },
   },
   computed: {
     loginId() {

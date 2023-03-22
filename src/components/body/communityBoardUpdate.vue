@@ -1,9 +1,8 @@
 <template>
   <div class="board-detail">
     <div class="board-header">
-      <div class="board-title-description">제목:</div>
+      <div class="board-title-description">제목</div>
       <input class="board-title" v-model="boardTitle" />
-      <!-- class="board-title -->
       <div class="board-meta">
         <div class="board-author">작성자: {{ this.board.userId }}</div>
         <div class="board-date">작성일: {{ this.board.boardDate }}</div>
@@ -29,11 +28,12 @@ export default {
   },
   created() {
     let boardId = this.$store.state.boardId;
+    let userId = sessionStorage.getItem('userId');
     console.log(`boardID => ${boardId}`);
     this.$axios
       .get(
         `http://localhost:80/board/${boardId}`,
-        { data: { userId: 'admin' } },
+        { data: { userId } },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -51,10 +51,10 @@ export default {
       });
   },
   methods: {
-    updateBoard: function() {
+    updateBoard: function () {
       const boardTitle = this.boardTitle;
       const boardContents = this.boardContents;
-      const userId = 'admin';
+      const userId = sessionStorage.getItem('userId');
       console.log(this.boardTitle);
       console.log(this.boardContents);
       this.$axios
@@ -83,6 +83,8 @@ export default {
 
 <style scoped>
 .board-title {
+  border: 1px solid rgb(144, 149, 149);
+  border-radius: 5px;
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
@@ -179,7 +181,7 @@ export default {
 .board-text {
   width: 100%;
   height: 400px;
-  border: #7c7c7c 1px solid;
+  border: 1px solid rgb(144, 149, 149);
   border-radius: 5px;
   padding: 5px;
 }

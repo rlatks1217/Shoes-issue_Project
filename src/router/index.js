@@ -20,6 +20,7 @@ import messageReceive from '../components/body/messageReceive';
 import messageReceiveDescription from '../components/body/messageReceiveDescription';
 import messageSendDescription from '../components/body/messageSendDescription';
 import updateUser from '../components/body/updateUser';
+import gamePage from '../components/body/gamePage';
 
 Vue.use(VueRouter);
 
@@ -113,6 +114,11 @@ const routes = [
     path: '/update-user',
     name: 'updateUser',
     component: updateUser,
+  },
+  {
+    path: '/game-page',
+    name: 'gamePage',
+    component: gamePage,
   },
   {
     path: '/trade-message',

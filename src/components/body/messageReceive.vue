@@ -22,7 +22,7 @@
               @click="toggleChecked(message)"
             />
           </td>
-          <td>{{ message.messageSender }}</td>
+          <td>{{ message.nickName }}</td>
           <td v-on:click="messagereceiveDescription(message.messageId)">
             {{ message.messageTitle }}
           </td>

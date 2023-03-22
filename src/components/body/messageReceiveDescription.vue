@@ -3,9 +3,9 @@
     <div class="message-header">
       <h1 class="message-title">제목: {{ this.message.messageTitle }}</h1>
       <div class="message-meta">
-        <div class="message-sender">보낸 사람: {{ this.message.messageSender }}</div>
+        <div class="message-sender">보낸 사람: {{ this.message.nickName }}</div>
         <div class="message-senddate">보낸 날짜: {{ this.message.messageSenddate }}</div>
-        <div class="messsage-receiver">받는 사람: {{ this.message.messageReceiver }}</div>
+        <!-- <div class="messsage-receiver">받는 사람: {{ this.message.messageReceiver }}</div> -->
       </div>
     </div>
     <div class="message-content">

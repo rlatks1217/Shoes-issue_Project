@@ -10,7 +10,7 @@
           보낸 날짜: {{ this.message.messageSenddate }}
         </div>
         <div class="messsage-sender">
-          보낸 사람: {{ this.message.messageSender }}
+          보낸 사람: {{ this.message.nickName }}
         </div>
       </div>
     </div>

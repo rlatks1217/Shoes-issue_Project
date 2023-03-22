@@ -2,7 +2,8 @@
   <div class="container my-5">
     <div class="row" style="margin-top: 90px;">
       <div class="col-md-4">
-        <font style="font-weight: bolder; font-weight: bolder; color: cadetblue; font-size: 30px;" >{{product.nickName}}{{"   LV. "+product.point}}</font>
+        <font style="font-weight: bolder; font-weight: bolder; color: rgb(64, 81, 59); font-size: 30px;" >{{product.nickName}}{{"   LV. "+product.point}}</font>
+        <i class="far fa-paper-plane" style="float : right; font-size: 40px;" v-on:click="messagePage(product.nickName, product.tradeId, product.userId)"></i>
         <br>
         <img :src="product.tradeImage" alt="Product image" class="img-fluid">
       </div>
@@ -42,7 +43,7 @@ export default {
              method : 'PUT',
              params : {
                 tradeId : tradeId,
-                tradeStatus : tradeStatus
+                writerId : this.product.userId //글 작성자 아이디
              },
              responseType : 'json'
             }).then(function(result) {
@@ -54,9 +55,10 @@ export default {
             this.$axios({
               url : 'http://localhost/trade-board/status-c',
             method : 'PUT',
-            params : {
-              tradeId : tradeId
-            },
+             params : {
+                tradeId : tradeId,
+                writerId : this.product.userId //글 작성자 아이디
+             },
             responseType : 'json'
            }).then(function (result) {
               this.product.tradeStatus = result.data;
@@ -65,6 +67,10 @@ export default {
         }
     },
     reserveCancel(tradeId) {
+        if (sessionStorage.getItem("userId") != this.product.userId) {
+          alert('권한이 없습니다!');
+          return;
+        }
         this.$axios({
                 url: 'http://localhost/trade-board/trade-status',
                 method : 'PUT',
@@ -82,8 +88,6 @@ export default {
         this.$router.push({ name: "tradeBoardWrite" , params : {tradeId:tradeId}});
     },
     deleteBoard(tradeId, tradeImage) {
-        console.log(tradeId);
-        console.log(tradeImage);
         this.$axios({
             url : 'http://localhost/trade-board/',
             method : 'DELETE',
@@ -93,8 +97,6 @@ export default {
                 tradeImage : tradeImage
             }
         }).then(function(tradeBoard) {
-            console.log(tradeBoard.data);
-            console.log("성공했습니다!");
             this.$store.state.list = tradeBoard.data[0];
             this.$store.state.page = tradeBoard.data[1];
             this.$router.push({ name: "tradeBoard" });
@@ -121,6 +123,26 @@ export default {
         }.bind(this));
       }
 
+    },
+    messagePage(nickName, tradeId, userId) {
+      // let senderNickName = '';
+      if (typeof sessionStorage.getItem('userId') !== 'undefined'){
+        // this.$axios({
+        //     url : 'http://localhost/senderNickName/',
+        //     method : 'GET',
+        //     responseType : 'json',
+        //     params : {
+        //         tradeId : tradeId,
+        //         userId : userId
+        //     }
+        // }).then(function(result) {
+        //   // senderNickName = result.data;
+        //   console.log(result.data);
+        // })
+        this.$router.push({ name : 'tradeMessage', params : {nickName : nickName, tradeId : tradeId, messageReceiverId : userId}});
+      }else {
+        alert('로그인이 필요합니다!');
+      }
     }
   }//methods 종료
 };

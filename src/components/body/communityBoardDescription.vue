@@ -40,9 +40,9 @@
         <input v-model="updateCommentContents" /> <button v-on:click="updateComment(commentId)">댓글 수정</button><button v-on:click="updateCommentToUnvisible">취소</button>
       </div> -->
       <!-- table-start -->
-      아이디<br />
-      내용<br />
-      날짜<br />
+      <div class="comment-Id">아이디</div>
+      <div class="comment-content">내용</div>
+      <div class="comment-date">날짜</div>
 
       <table id="comment">
         <thead>
@@ -380,6 +380,20 @@ export default {
   border-bottom: 1px solid rgb(207, 215, 215);
   font-size: larger;
   font-weight: 600;
+}
+
+.comment-Id {
+  font-weight: 800;
+  font-size: 15px;
+}
+.comment-content {
+  font-weight: 500;
+  font-size: 15px;
+}
+.comment-date {
+  font-weight: 500;
+  font-size: 12px;
+  color: rgb(143, 142, 142);
 }
 
 .comment-content-box {

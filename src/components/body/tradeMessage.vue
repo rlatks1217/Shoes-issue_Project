@@ -4,7 +4,7 @@
       <h3>쪽지 보내기</h3>
       <br>
       <div class="form-group">
-        <label for="messageSender"> 보내는 사람: {{ this.userId }}</label>
+        <label for="messageSender"> 보내는 사람: {{ this.senderNickName }}</label>
         <label for="messageReceiver"
           >받는 사람: {{ this.messageReceiver }}</label
         >
@@ -34,17 +34,18 @@ export default {
     return {
       messageTitle: "",
       messageContents: "",
-      messageReceiver: "", //작성자 닉네임
-      messageReceiverId: "", //작성자 아이디
-      tradeId : "" //작성자의 글번호
+      messageReceiver: "", //게시글의 작성자 닉네임
+      messageReceiverId: "", //게시글의 작성자 아이디
+      tradeId : "", //게시글의 작성자의 글번호
+      senderNickName : "", //보내는사람 닉네임
     };
   },
   created() {
     this.messageReceiver = this.$store.state.messageReceiver;
-    this.userId = sessionStorage.getItem("userId");
     this.tradeId = this.$route.params.tradeId;
     this.messageReceiver = this.$route.params.nickName;
     this.messageReceiverId = this.$route.params.messageReceiverId;
+    this.senderNickName = this.$route.params.senderNickName;
   },
   methods: {
     submitPost() {
@@ -59,7 +60,7 @@ export default {
             messageTitle: this.messageTitle,
             messageContents: this.messageContents,
             messageReceiver: this.messageReceiverId,
-            messageSender: this.userId,
+            messageSender: sessionStorage.getItem('userId'),
           },
           {
             headers: { "Content-Type": "application/json" },

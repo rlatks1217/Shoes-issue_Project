@@ -61,7 +61,8 @@ import $ from 'jquery';
       if (sessionStorage.getItem('userId') != undefined) {
         this.$router.push({ name: "tradeBoardWrite" });
       }else {
-          alert('로그인을 해주세요!');
+        alert('로그인을 해주세요!');
+        this.$router.push({ name: "userLogin" });
       }
       },
       tradeBoardDetail : function(tradeId, userId) {

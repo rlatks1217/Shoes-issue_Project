@@ -53,24 +53,26 @@ export default {
       let messageId = this.message.messageId;
       // console.log(this.message.messageId);
       console.log(messageId);
-      const url = `http://localhost/message/${messageId}`;
+      const url = `http://localhost/message/delete/${messageId}`;
 
       this.$axios({
-        url,
-        method: 'DELETE'
+        url: url,
+        method: 'POST',
+        data: messageId,
       })
-        .then({
-
+        .then(data => {
+          this.$router.push({ name: 'messageReceive' });
+          console.log(data);
         })
-        .catch({
-
+        .catch(error => {
+          console.log(error);
         });
     },
 
     messagereceive: function (messageId) {
       console.log(messageId);
       this.$store.state.messageId = messageId;
-      this.$router.push({ name: 'messageSend' });
+      this.$router.push({ name: 'messageReceive' });
       console.log('보낸 쪽지함');
     },
 

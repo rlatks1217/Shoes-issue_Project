@@ -4,14 +4,14 @@
       <h1 class="message-title">제목: {{ this.message.messageTitle }}</h1>
       <div class="message-meta">
         <div class="message-receiver">
-          받은 사람: {{ this.message.messageReceiver }}
+          받은 사람: {{ this.message.nickName }}
         </div>
         <div class="message-senddate">
           보낸 날짜: {{ this.message.messageSenddate }}
         </div>
-        <div class="messsage-sender">
+        <!-- <div class="messsage-sender">
           보낸 사람: {{ this.message.nickName }}
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="message-content">
@@ -19,8 +19,8 @@
         {{ this.message.messageContents }}
       </div>
       <div id="message-button">
-        <button class="mybutton">삭제</button>
-        <button class="mybutton" @click="messagesend">확인</button>
+        <v-btn class="mybutton" @click="messageDelete">삭제</v-btn>
+        <v-btn class="mybutton" @click="messagesend">확인</v-btn>
       </div>
     </div>
   </div>
@@ -39,7 +39,7 @@ export default {
     // let messageId = 'message1';
     console.log('messageId확인');
     console.log(messageId);
-    const url = `http://localhost:80/message/${messageId}`;
+    const url = `http://localhost:80/message/${messageId}/send`;
     this.$axios({
       url,
       method: "GET",
@@ -55,6 +55,26 @@ export default {
       });
   },
   methods: {
+    messageDelete: function() {
+      let messageId = this.message.messageId;
+      // console.log(this.message.messageId);
+      console.log(messageId);
+      const url = `http://localhost/message/delete/${messageId}`;
+
+      this.$axios({
+        url: url,
+        method: 'POST',
+        data: messageId,
+      })
+        .then(data => {
+          this.$router.push({ name: 'messageSend' });
+          console.log(data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
     messagesend: function (messageId) {
       console.log(messageId);
       this.$store.state.messageId = messageId;
@@ -66,6 +86,10 @@ export default {
 </script>
 
 <style>
+.mybutton {
+  margin: 10px;
+}
+
 .message-title {
   color: black;
   font-size: 24px;

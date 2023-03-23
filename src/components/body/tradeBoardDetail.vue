@@ -28,7 +28,9 @@
 export default {
   data() {
     return {
-      product: this.$store.state.detail
+      product: this.$store.state.detail,
+      nickName: '',
+      senderNickName: ''
     }
   },
   methods: {
@@ -125,23 +127,23 @@ export default {
 
     },
     messagePage(nickName, tradeId, userId) {
-      // let senderNickName = '';
-      if (typeof sessionStorage.getItem('userId') !== 'undefined'){
-        // this.$axios({
-        //     url : 'http://localhost/senderNickName/',
-        //     method : 'GET',
-        //     responseType : 'json',
-        //     params : {
-        //         tradeId : tradeId,
-        //         userId : userId
-        //     }
-        // }).then(function(result) {
-        //   // senderNickName = result.data;
-        //   console.log(result.data);
-        // })
-        this.$router.push({ name : 'tradeMessage', params : {nickName : nickName, tradeId : tradeId, messageReceiverId : userId}});
+      let loginId = sessionStorage.getItem('userId');
+      if (typeof sessionStorage.getItem('userId') !== 'undefined' && loginId != null){
+        this.$axios({
+            url : 'http://localhost/senderNickName/',
+            method : 'GET',
+            responseType : 'json',
+            params : {
+                tradeId : tradeId,
+                userId : loginId
+            }
+        }).then(function(result) {
+          this.senderNickName = result.data;
+          this.$router.push({ name : 'tradeMessage', params : {nickName : nickName, tradeId : tradeId, messageReceiverId : userId, senderNickName : this.senderNickName}});
+        }.bind(this));
       }else {
         alert('로그인이 필요합니다!');
+        this.$router.push({ name : 'userLogin'});
       }
     }
   }//methods 종료

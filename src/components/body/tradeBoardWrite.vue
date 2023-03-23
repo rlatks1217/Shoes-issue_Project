@@ -87,7 +87,7 @@ export default {
           data: formData,
           responseType : 'json'
         }).then(function(result){
-          console.log(result);
+ 
           this.$store.state.list = result.data[0];
           this.$store.state.page = result.data[1];
           this.$router.push({ name: "tradeBoard" });
@@ -96,7 +96,7 @@ export default {
     },
     checkExtension(fileName, fileSize) {
       let regex = /\.(jpg|jpeg|png|gif|bmp)$/i;
-      let maxSize = 5242880;
+      let maxSize = 10000000;
 
 			if(fileSize >= maxSize) {
 				alert("파일 사이즈 초과");
@@ -114,6 +114,9 @@ export default {
         return false;
       }else if (title == '') {
         alert('제목을 입력해주세요!');
+        return false;
+      }else if (price === ''){
+        alert('가격을 입력해주세요!');
         return false;
       }else {
         return true;

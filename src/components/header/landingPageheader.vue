@@ -33,7 +33,14 @@
                 </td>
                 <td>
                   <form class="d-flex me-3" role="search">
-                    <a v-if="nickName" class="btn btn-outline-success button" type="submit" style="height: 40px; font-size: 16px"><img src="/images/nomessage.png" alt="" style="height: 20px" /></a>
+                    <a v-if="nickName&&openMessage" class="btn btn-outline-success button" type="submit" style="height: 40px; font-size: 16px" v-on:click="messageCheck">
+                      <img src="/images/nomessage.png" alt="" style="height: 20px" />
+                      </a>
+                    <a v-if="notOpenMessage" class="btn btn-outline-success button" type="submit" style="height: 40px; font-size: 16px" v-on:click="messageCheck">
+                      <div class="bubble">
+                        <img src="/images/nomessage.png" alt="" style="height: 20px" />
+                        </div>
+                      </a>
                   </form>
                 </td>
                 <td>
@@ -82,6 +89,8 @@
         userId: sessionStorage.getItem('userId'),
         nickName: sessionStorage.getItem('nickName'),
         keyword: '',
+        openMessage: true, 
+        notOpenMessage: false
       };
     },
     methods: {
@@ -173,6 +182,9 @@
           }.bind(this)
         );
       },
+      messageCheck: function () {
+        this.$router.push({ name: "messageReceive" });
+      },
       communityBoard: function () {
         this.$router.push({ name: "communityBoard" });
       },
@@ -186,15 +198,80 @@
       },
       loginName() {
         return sessionStorage.getItem('nickName');
-      },
+      }
     },
+    watch : {
+      $route : function() {
+        let loginId = sessionStorage.getItem('userId');
+        console.log(loginId);
+        if (typeof loginId !== 'undefined' && loginId !== null) {
+          this.$axios({
+            url : 'http://localhost/alarm',
+            method : 'GET',
+            params : {
+              userId : loginId
+            },
+            responseType : 'json'
+          }).then(function(result) {
+            if (result.data != '0') {
+              this.openMessage = false;
+              this.notOpenMessage = true;
+            } else {
+              this.openMessage = true;
+              this.notOpenMessage = false;
+            }
+          }.bind(this));
+        }
+      }
+    },
+    created() {
+      let loginId = sessionStorage.getItem('userId');
+      if (typeof loginId !== 'undefined' && loginId !== null) {
+        this.$axios({
+          url : 'http://localhost/alarm',
+          method : 'GET',
+          params : {
+            userId : loginId
+          },
+          responseType : 'json'
+        }).then(function(result) {
+          if (result.data != '0') {
+            this.openMessage = false;
+            this.notOpenMessage = true;
+          } else {
+            this.openMessage = true;
+            this.notOpenMessage = false;
+          }
+        }.bind(this));
+      }
+    }
   };
   </script>
-    <style>
+  <style scoped>
   .button {
     border-color: transparent;
   }
   .logo {
     width: 250px;
   }
+.bubble {
+  position: relative;
+  width: 40px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: none;
+  animation: shake 0.8s ease-in-out infinite;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
   </style>

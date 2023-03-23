@@ -4,7 +4,6 @@
       <div class="communityBoardTitle">자유 게시판</div>
       <div class="communityBoardDescription">신발에 관한 이야기라면 어떤 이야기라도 좋아요! 함께 이야기해요</div>
     </div>
-    <v-btn secondary small class="writeButton" @click="goToGame">게임 이동!!</v-btn>
     <v-btn v-if="!this.userId" secondary disabled small class="writeButton">글쓰기</v-btn>
     <v-btn v-else class="writeButton" small @click="boardWrite()">글쓰기</v-btn>
     <v-data-table
@@ -53,9 +52,6 @@ export default {
       });
   },
   methods: {
-    goToGame: function () {
-      this.$router.push({ name: 'gamePage' });
-    },
     boardDescription(boardId) {
       this.$store.state.boardId = boardId;
       this.$router.push({ name: 'communityBoardDescription' });

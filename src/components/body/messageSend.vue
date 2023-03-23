@@ -5,7 +5,7 @@
     <table class="table">
       <thead class="table-light">
         <tr>
-          <th>선택</th>
+          <!-- <th>선택</th> -->
           <th>받은 사람</th>
           <th>제목</th>
           <th>보낸 날짜</th>
@@ -13,9 +13,9 @@
       </thead>
       <tbody>
         <tr v-for="(message, i) in messages" :key="i">
-          <td>
+          <!-- <td>
             <input type ="checkbox" v-model="message.checked" @click="toggleChecked(message)">
-          </td>
+          </td> -->
           <td>{{message.nickName}}</td>
           <td v-on:click="messagesendDescription(message.messageId)">{{message.messageTitle}}</td>
           <td>{{message.messageSenddate}}</td>
@@ -29,7 +29,7 @@
         </td> -->
       </tbody>
     </table>
-    <button class="deleteBtn">삭제</button>
+    <!-- <button class="deleteBtn">삭제</button> -->
   </div>
 </template>
 

@@ -48,8 +48,11 @@
                       <span v-if="isDuplicate" style="color: red"
                         >이미 사용중인 이메일입니다.</span
                       >
+                      <span v-if="!userId && !isChecking" style="color: red"
+                        >빈칸입니다.</span
+                      >
                       <span
-                        v-if="!isDuplicate && !isChecking"
+                        v-if="!isDuplicate && !isChecking && userId"
                         style="color: green"
                         >사용 가능한 이메일입니다.</span
                       >

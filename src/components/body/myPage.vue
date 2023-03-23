@@ -47,36 +47,8 @@
                       />
                     </div>
                     <br />
-                    <!--
-                      <div class="community-buttons"> 
-                      게시판
-                      <button
-                        type="submit"
-                        class="btn btn-primary btn-block mx-auto d-block"
-                        style="
-                          background-color: rgb(237, 241, 214);
-                          color: black;
-                          border-color: rgb(237, 241, 214);
-                        "
-                        v-on:click="mypagecommunitylike()"
-                      >
-                        좋아요한 게시글
-                      </button>
-                      <button
-                        type="submit"
-                        class="btn btn-primary btn-block mx-auto d-block"
-                        style="
-                          background-color: rgb(237, 241, 214);
-                          color: black;
-                          border-color: rgb(237, 241, 214);
-                        "
-                        v-on:click="mypagecommunitywrite()"
-                      >
-                        작성한 게시글
-                      </button> 
-                      </div>-->
                     <div class="trade-buttons">
-                      <button
+                      <v-btn
                         type="submit"
                         class="btn btn-primary btn-block mx-auto d-block"
                         style="
@@ -87,11 +59,11 @@
                         v-on:click="tradeBoardLike()"
                       >
                         중고거래 좋아요한 게시글
-                      </button>
+                      </v-btn>
                     </div>
                     <br />
                     <div class="trade-buttons">
-                      <button
+                      <v-btn
                         type="submit"
                         class="btn btn-primary btn-block mx-auto d-block"
                         style="
@@ -102,7 +74,7 @@
                         v-on:click="tradeBoardWrite()"
                       >
                         중고거래 작성한 게시글
-                      </button>
+                      </v-btn>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -119,7 +91,7 @@
                     </div>
                     <br />
                     <ul>
-                      <button
+                      <v-btn
                         type="submit"
                         class="btn btn-primary btn-block mx-auto d-block"
                         style="
@@ -130,13 +102,20 @@
                         @click="messageCheck"
                       >
                         쪽지 확인
-                      </button>
+                      </v-btn>
+                      <br>
+                      <v-btn class="btn btn-primary btn-block mx-auto d-block writebutton" 
+                      style="
+                          background-color: rgb(237, 241, 214);
+                          color: black;
+                          border-color: rgb(237, 241, 214);
+                        " @click="goToGame">게임 이동!!</v-btn>
                     </ul>
                   </div>
                 </div>
                 <br />
 
-                <button
+                <v-btn
                   v-on:click="informupdate()"
                   class="btn btn-primary btn-block mx-auto d-block"
                   style="
@@ -146,7 +125,7 @@
                   "
                 >
                   정보수정
-                </button>
+                </v-btn>
               </div>
             </div>
           </div>
@@ -174,6 +153,9 @@ export default {
     };
   },
   methods: {
+    goToGame: function () {
+      this.$router.push({ name: 'gamePage' });
+    },
     messageCheck: function () {
       this.$router.push({ name: "messageReceive" });
     },
@@ -186,23 +168,6 @@ export default {
     mypagetradelike: function () {
       this.tradeBoardLike();
     },
-    // mypagecommunitywrite: function () {
-    //   axios
-    //     .post(`http://localhost:80/user/communityAll`, {
-    //       userId: sessionStorage.getItem("userId"),
-    //     })
-    //     .then((response) => {
-    //       console.log(response);
-    //       console.log(response.data); // Spring에서 반환한 데이터를 콘솔에 출력
-    //       this.$router.push({
-    //         name: "communityBoard",
-    //         params: { result: response.data },
-    //       }); // 데이터를 정상적으로 받았으면 라우트 이동 수행
-    //     })
-    //     .catch((error) => {
-    //       console.error(error); // 에러 발생 시 콘솔에 출력
-    //     });
-    // },
 
     mypagetradewrite: function () {
       this.tradeBoardWrite();

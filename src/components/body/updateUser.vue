@@ -251,7 +251,7 @@ export default {
 
     checkExtension(fileName, fileSize) {
       let regex = /\.(jpg|jpeg|png|gif|bmp)$/i;
-      let maxSize = 5242880;
+      let maxSize = 15242880;
 
       if (fileSize > maxSize) {
         alert("파일 크기는 5MB 이하이어야 합니다.");

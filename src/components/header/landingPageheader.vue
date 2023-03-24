@@ -38,7 +38,7 @@
                       </a>
                     <a v-if="notOpenMessage" class="btn btn-outline-success button" type="submit" style="height: 40px; font-size: 16px" v-on:click="messageCheck">
                       <div class="bubble">
-                        <img src="/images/nomessage.png" alt="" style="height: 20px" />
+                        <img src="/images/bell.png" alt="" style="height: 20px" />
                         </div>
                       </a>
                   </form>
